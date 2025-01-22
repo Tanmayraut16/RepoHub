@@ -1,0 +1,29 @@
+{
+  "name": "repohub",
+  "version": "1.0.0",
+  "description": "This is a platform to visit various github repos.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon backend/index.js"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tanmayraut16/RepoHub.git"
+  },
+  "author": "Tanmay Raut",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tanmayraut16/RepoHub/issues"
+  },
+  "homepage": "https://github.com/Tanmayraut16/RepoHub#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}

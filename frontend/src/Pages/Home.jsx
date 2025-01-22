@@ -10,27 +10,20 @@ const Home = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [repos, setRepos] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [sortType, setSortType] = useState("forks");
+  const [sortType, setSortType] = useState("recent");
 
   const getUserProfileAndRepos = useCallback(
     async (username = "Tanmayraut16") => {
       setLoading(true);
       try {
-        const userResponse = await fetch(
-          `https://api.github.com/users/${username}`
-        );
-        if (!userResponse.ok) {
-          throw new Error(`User not found: ${username}`);
+        const res = await fetch(`http://localhost:5000/api/users/profile/${username}`);
+        if (!res.ok) {
+          throw new Error(`Error fetching data: ${res.statusText}`);
         }
-        const userProfile = await userResponse.json();
-        setUserProfile(userProfile);
-
-        const repoResponse = await fetch(userProfile.repos_url);
-        if (!repoResponse.ok) {
-          throw new Error("Failed to fetch repositories");
-        }
-        const repos = await repoResponse.json();
+        const { repos, userProfile } = await res.json();
+        repos.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
         setRepos(repos);
+        setUserProfile(userProfile);
       } catch (error) {
         toast.error(error.message);
         console.error(error);
@@ -49,11 +42,8 @@ const Home = () => {
 
   const onSearch = async (e, username) => {
     e.preventDefault();
-    setLoading(true);
-    setRepos([]);
-    setUserProfile(null);
-
     await getUserProfileAndRepos(username);
+    setSortType("recent");
   };
 
   const onSort = (sortType) => {
