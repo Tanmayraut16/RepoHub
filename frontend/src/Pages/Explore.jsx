@@ -13,7 +13,7 @@ const Explore = () => {
     setRepos([]); // Clear existing repos before fetching new ones
     try {
       const res = await fetch(
-        "http://localhost:5000/api/exploreRepos/repos/" + language
+        "/api/exploreRepos/repos/" + language
       );
       const data = await res.json();
 

@@ -16,7 +16,7 @@ const Home = () => {
     async (username = "Tanmayraut16") => {
       setLoading(true);
       try {
-        const res = await fetch(`http://localhost:5000/api/users/profile/${username}`);
+        const res = await fetch(`/api/users/profile/${username}`);
         if (!res.ok) {
           throw new Error(`Error fetching data: ${res.statusText}`);
         }
