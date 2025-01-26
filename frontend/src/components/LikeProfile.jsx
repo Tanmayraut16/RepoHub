@@ -10,7 +10,7 @@ const LikeProfile = ({ userProfile }) => {
 
   const handleLikeProfile = async () => {
     try {
-      const res = await fetch(/api/users/like/${userProfile.login}, {
+      const res = await fetch(`/api/users/like/${userProfile.login}`, {
         method: "POST",
         credentials: "include",
       });
