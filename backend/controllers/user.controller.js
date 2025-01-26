@@ -43,7 +43,7 @@ export const getUserProfileAndRepos = async (req, res) => {
 
 export const likeProfile = async (req, res) => {
   try {
-    // Ensure the user making the request is authenticated
+    // Ensure user is authenticated
     if (!req.user) {
       return res.status(401).json({ error: "Unauthorized" });
     }
@@ -55,26 +55,13 @@ export const likeProfile = async (req, res) => {
       return res.status(400).json({ error: "Invalid username" });
     }
 
-    // Fetch the authenticated user
+    // Fetch users
     const user = await User.findById(req.user._id.toString());
+    const userToLike = await User.findOne({ username });
 
-    // Check if the user making the request exists
-    if (!user) {
-      return res.status(404).json({ error: "Authenticated user not found" });
-    }
-
-    // Attempt to find the user to like
-    let userToLike = await User.findOne({ username });
-
-    if (!userToLike) {
-      // If the user does not exist in the database, create a placeholder user
-      userToLike = new User({
-        username,
-        avatarUrl: null, // Default or placeholder avatar URL
-        likedBy: [],
-        liked: [],
-      });
-      await userToLike.save();
+    // Check if users exist
+    if (!user || !userToLike) {
+      return res.status(404).json({ error: "User not found" });
     }
 
     // Check if already liked
@@ -102,20 +89,7 @@ export const likeProfile = async (req, res) => {
 
 export const getLikes = async (req, res) => {
   try {
-    // Ensure the user making the request is authenticated
-    if (!req.user) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
-
-    // Fetch the authenticated user
     const user = await User.findById(req.user._id.toString());
-
-    // Check if the user exists
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    // Return the list of users who liked the authenticated user
     res.status(200).json({ likedBy: user.likedBy });
   } catch (error) {
     res.status(500).json({ error: error.message });
